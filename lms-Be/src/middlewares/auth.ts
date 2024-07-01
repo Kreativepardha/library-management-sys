@@ -19,11 +19,11 @@ export const isAdmin =  async(req:any,res:any,next:any) =>{
         return res.status(401).json({ msg: "User is not authenticated" });
     }
     const token = authHeader;  
-    // console.log(token)
+    console.log(token)
    
 
         try {
-            let decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
+            const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
             console.log(decoded)
             const user = await User.findById(decoded.userId)  ;
             console.log( 'userId is'+user)

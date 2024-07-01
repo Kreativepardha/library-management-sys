@@ -4,17 +4,24 @@ import { Button } from "../components/Button"
 import axios from "axios"
 import { BACKEND_URL } from "../config"
 import { useNavigate } from "react-router-dom"
+import { Navbar } from "../components/Navbar"
 
 
-export const Login = () => {
+export const Register = () => {
+        const [name,setName] = useState("")
         const [email,setEmail] = useState("")
         const [password,setPassword] = useState("")
         const [error,setError] = useState("")
         const [emailError,setEmailError] = useState(false)
         const [passwordError,setPasswordError] = useState(false)
+        const [nameError,setNameError] = useState(false)
 
         const navigate = useNavigate()
 
+        const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+            setName(e.target.value);
+            setNameError(false)
+    }
 
             const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
                     setEmail(e.target.value);
@@ -29,6 +36,10 @@ export const Login = () => {
     const handleSubmit = async (e:FormEvent ) => {
         e.preventDefault()
         let isValid = true;
+        if(name.length < 5) {
+            setNameError(true)
+            isValid = false
+        }
             if(email.length < 5) {
                 setEmailError(true)
                 isValid = false
@@ -42,8 +53,8 @@ export const Login = () => {
             }
 
             try {
-                const response = await axios.post(`${BACKEND_URL}/api/v1/auth/login`,{
-                    email,password
+                const response = await axios.post(`${BACKEND_URL}/api/v1/user`,{
+                    name,email,password
                 })
                 if(response.status === 200) {
                         const {token} = response.data;
@@ -66,12 +77,24 @@ export const Login = () => {
 
     }
 
-    return <div className="flex justify-center items-center h-screen">
+    return <>
+    <Navbar />
+    <div className="flex justify-center items-center h-screen">
         <form  onSubmit={handleSubmit} className="border-2 rounded-lg p-8  w-80 bg-white drop-shadow-lg  shadow-md">
             {
                 error && <p className="text-red-500 text-center mb-4" > {error} </p>
             }
-            <h1 className="font-extrabold text-center" >LOGIN</h1>
+            <h1 className="font-extrabold text-center" >Add Student</h1>
+            <Input  
+                placeholder="enter name"
+                type="name"
+                value={name}
+                name="name"
+                label="name id" 
+                onChange={handleNameChange}
+                error={nameError}
+                
+                />
             <Input  
                 placeholder="enter your mail"
                 type="email"
@@ -80,8 +103,8 @@ export const Login = () => {
                 label="Email id" 
                 onChange={handleEmailChange}
                 error={emailError}
-
-            />
+                
+                />
  <Input  
                 placeholder="enter your password"
                 type="password"
@@ -90,13 +113,14 @@ export const Login = () => {
                 label="password" 
                 onChange={handlePasswordChange}
                 error={passwordError}
-            />
+                />
 
                <Button  size="lg" >      
-                        Submit
+                        register
                     </Button>
                    
         </form>
 
     </div>
+                </>
 }

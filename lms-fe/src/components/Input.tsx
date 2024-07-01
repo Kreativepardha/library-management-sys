@@ -4,10 +4,10 @@ import { ChangeEvent } from "react";
 
 
 interface InputProps{
-    type:string,
+    type?:string,
     placeholder:string,
     label:string,
-    name:string,
+    name?:string,
     value:string,
     error?:boolean,
     classname?:string,
