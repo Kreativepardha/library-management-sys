@@ -26,7 +26,7 @@ export const Books = () => {
         setBooks(response.data);
       } catch (err) {
         console.error(err);
-        setError("Failed to fetch books");
+        setError("Failed to fetch books. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -75,4 +75,3 @@ export const Books = () => {
     </div>
   );
 };
-  
