@@ -47,10 +47,10 @@ export const Login = () => {
                 })
                 if(response.status === 200) {
                         const {token} = response.data;
-                        console.log(token)
+                        console.log("tokeniiis",token)
 
                             if(token) {
-                                localStorage.setItem("token", JSON.stringify(token))
+                                localStorage.setItem("token",token)
                                 navigate("/dashboard")
                             } else {
                                 setError("Token not Found in response ")

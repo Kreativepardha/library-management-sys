@@ -7,8 +7,8 @@ const router = express.Router();
 //  route ////\\\\\\\/\/\/\/\\/\/\//\///\\////\\/\/\//\//\/\\/\/\\/\//\//\/\//\/\/\/\/\//\\\/\\/\/\/\/\/\/\//\/\\\\\\\\\\\\\\\\/\/\\/\\/\/\/\/\/\/\/\/\//\/\
 router.post("/",createUser)
 router.get("/:id", isAuthenticated, getUser)
-router.get("/", isAdmin, getAllUsers)
-router.delete("/:id", isAuthenticated, isAdmin, deleteUser)
+router.get("/",isAdmin, getAllUsers)
+router.delete("/:id", isAdmin, deleteUser)
 
 
 export { router as userRouter}

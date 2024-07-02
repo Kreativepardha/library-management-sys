@@ -2,22 +2,20 @@ import { useEffect, useState } from "react";
 import { Navbar } from "../components/Navbar";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
-import { BookCard } from "../components/BookCard";
 import { StudentCard } from "../components/StudentCard";
-
-
+import { Loading } from "../components/Loading";
 
 export const Students = () => {
-  const [students, setStudents] = useState();
+  const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchstudents = async () => {
+    const fetchStudents = async () => {
       try {
         const response = await axios.get(`${BACKEND_URL}/api/v1/user`);
-        if (Array.isArray(response.data)) {
-          setStudents(response.data);
+        if (response.data && Array.isArray(response.data.users)) {
+          setStudents(response.data.users);
         } else {
           setStudents([]);
           console.error("Unexpected response format", response.data);
@@ -25,13 +23,17 @@ export const Students = () => {
         }
       } catch (err) {
         console.error(err);
-        setError("Failed to fetch students");
+        if (err.response && err.response.data && err.response.data.err) {
+          setError(`Failed to fetch students: ${err.response.data.err.reason.type}`);
+        } else {
+          setError("Failed to fetch students: Unknown error");
+        }
       } finally {
         setLoading(false);
       }
     };
 
-    fetchstudents();
+    fetchStudents();
   }, []);
 
   return (
@@ -39,14 +41,15 @@ export const Students = () => {
       <Navbar />
       <div className="p-6">
         {loading ? (
-          <p>Loading...</p>
-        ) : error ? (
-          <p>{error}</p>
-        ) : (
+         <Loading />
+        ) 
+        // : error ? (
+        //   <p>{error}</p>
+        // ) 
+        : (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {students.map((student) => (
-              <StudentCard key={student.id} student={student} />
-
+              <StudentCard key={student._id} student={student} />
             ))}
           </div>
         )}

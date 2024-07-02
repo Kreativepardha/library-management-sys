@@ -10,50 +10,44 @@ const signupBody = zod.object({
 })
 
 
-export const createUser = async(req:any,res:any) =>{
-    const { name, email, password, is_admin } = req.body;
-const { success } = signupBody.safeParse(req.body);
-if(!success) {
-    return res.status(411).json({
-        message:"Email already taken / Invalid input "
-    })
-}
-    try {
-        const existingUser = await User.findOne({
-            email:req.body.email
-        })
-        if(existingUser){
-            return res.status(411).json({
-                message:"Email already taken"
-            })
 
+
+export const createUser = async (req: any, res: any) => {
+    const { name, email, password, is_admin } = req.body;
+    const { success } = signupBody.safeParse(req.body);
+    if (!success) {
+        return res.status(411).json({
+            message: "Email already taken / Invalid input "
+        });
+    }
+    try {
+        const existingUser = await User.findOne({ email: req.body.email });
+        if (existingUser) {
+            return res.status(411).json({
+                message: "Email already taken"
+            });
         }
         const salt = 10;
-        const hashedpassword = await bcrypt.hash(password, salt) 
-
+        const hashedPassword = await bcrypt.hash(password, salt);
         const user = await User.create({
             name,
             email,
-            password:hashedpassword,
-            is_admin: is_admin ?? false 
-        })
+            password: hashedPassword,
+            is_admin: is_admin ?? false
+        });
         const userId = user._id;
-        const token = jwt.sign({
-            userId
-        }, process.env.JWT_SECRET as string)
-
+        const token = jwt.sign({ userId }, process.env.JWT_SECRET as string);
         res.json({
-            message:"User created successfully",
-            token:token
-        })
-
+            message: "User created successfully",
+            token: `Bearer ${token}`
+        });
     } catch (err) {
         res.status(500).json({
             message: "Server error",
             error: err
         });
     }
-}
+};
 
 export const getUser = async (req:any,res:any) => {
     const { id } = req.params;

@@ -8,6 +8,7 @@ import { Navbar } from './components/Navbar'
 import { AddBook } from './components/AddBook'
 import { Students } from './pages/Students'
 import { Register } from './pages/Register'
+import { Loading } from './components/Loading'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
           <Route path='/books' element={<Books />}  />
           <Route path='/students' element={<Students />}  />
           <Route path='/addbook' element={<AddBook />}  />
+          <Route path='/loading' element={<Loading />}  />
         </Routes>
         </BrowserRouter>
     </>

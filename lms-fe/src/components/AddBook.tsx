@@ -1,8 +1,9 @@
 import { FormEvent, useState } from "react";
 import Input from "../components/Input";
+import axios from "axios";
+import { BACKEND_URL } from "../config";
 import { Button } from "../components/Button";
 import { Navbar } from "./Navbar";
-import { BACKEND_URL } from "../config";
 
 export const AddBook = () => {
   const [accessionNo, setAccessionNo] = useState("");
@@ -15,57 +16,54 @@ export const AddBook = () => {
   const [source, setSource] = useState("");
   const [billdate, setBilldate] = useState("");
   const [cost, setCost] = useState("");
-  const [rackno, setRackno] = useState("");
+  const [rack, setRack] = useState("");
   const [error, setError] = useState("");
 
+  // Function to retrieve token from local storage
   const getToken = () => {
-    return localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+    console.log("Retrieved token:", token); // Log to check token retrieval
+    return token;
   };
 
+  // Function to handle form submission
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const token = getToken();
-
     if (!token) {
-      setError("User is not authenticated. Please log in.");
+      setError("No token found. Please log in.");
       return;
     }
 
     try {
-      const validatedData = {
-        accessionNo,
-        author,
-        title,
-        edition,
-        pages: parseInt(pages),
-        volume,
-        publisher,
-        source,
-        billdate,
-        cost: parseInt(cost),
-        rackno,
-      };
-
-      const response = await fetch(`${BACKEND_URL}/api/v1/book`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjdhNGFjZGQ2YjBlOGY2ODM2MDI3NmUiLCJpYXQiOjE3MTkyOTA1NzN9.ouY0oHyaWmMLYOJ0PAPc0-DYKc1JlvN0u6vCN3G_NVo`,
+      console.log("Before Axios POST request"); // Debugging log
+      const response = await axios.post(
+        `${BACKEND_URL}/api/v1/book`,
+        {
+          accessionNo,
+          author,
+          edition,
+          title,
+          pages,
+          volume,
+          publisher,
+          source,
+          billdate,
+          cost,
+          rack,
         },
-        body: JSON.stringify(validatedData),
-      });
-
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(
-          `HTTP error! Status: ${response.status} - ${errorMessage}`
-        );
-      }
-
-      const responseData = await response.json();
-      console.log(responseData);
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Ensure the token is passed correctly
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("After Axios POST request"); // Debugging log
+      console.log(response.data);
       alert("Book added successfully!");
 
+      // Reset form fields
       setAccessionNo("");
       setAuthor("");
       setEdition("");
@@ -76,10 +74,14 @@ export const AddBook = () => {
       setSource("");
       setBilldate("");
       setCost("");
-      setRackno("");
+      setRack("");
     } catch (err) {
-      console.error(err);
-      setError("An error occurred during registration. Please try again.");
+      console.error("Error in Axios POST request", err); // More specific error log
+      if (axios.isAxiosError(err) && err.response?.status === 401) {
+        setError("Unauthorized: Invalid token. Please log in again.");
+      } else {
+        setError("An error occurred during registration. Please try again.");
+      }
     }
   };
 
@@ -89,30 +91,26 @@ export const AddBook = () => {
       <div className="h-screen w-full flex justify-center items-center bg-sky-300">
         <form
           onSubmit={handleSubmit}
-          className="w-92 border-t-2  shadow-lg rounded-lg  absolute bg-yellow-200"
+          className="w-92 border-t-2 shadow-lg rounded-lg absolute bg-yellow-200"
         >
-          <h1 className="font-extrabold text-center mt-4 text-slate-900">
-            Add Book
-          </h1>
+          <h1 className="font-extrabold text-center mt-4 text-slate-900">Add Book</h1>
           <div className="grid grid-cols-2 m-4">
             <Input
               label="Accession no"
-              name="123"
+              name="accessionNo"
               value={accessionNo}
               onChange={(e) => setAccessionNo(e.target.value)}
-              placeholder="Enter AccessionNO"
+              placeholder="Enter Accession No"
               type="text"
             />
-
             <Input
               label="Author"
-              name="Author"
+              name="author"
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
               placeholder="John Doe"
               type="text"
             />
-
             <Input
               label="Edition"
               name="edition"
@@ -137,7 +135,6 @@ export const AddBook = () => {
               placeholder="230"
               type="text"
             />
-
             <Input
               label="Volume"
               name="volume"
@@ -147,7 +144,7 @@ export const AddBook = () => {
               type="text"
             />
             <Input
-              label="publisher"
+              label="Publisher"
               name="publisher"
               value={publisher}
               onChange={(e) => setPublisher(e.target.value)}
@@ -155,7 +152,7 @@ export const AddBook = () => {
               type="text"
             />
             <Input
-              label="source"
+              label="Source"
               name="source"
               value={source}
               onChange={(e) => setSource(e.target.value)}
@@ -163,7 +160,7 @@ export const AddBook = () => {
               type="text"
             />
             <Input
-              label="billdate"
+              label="Bill Date"
               name="billdate"
               value={billdate}
               onChange={(e) => setBilldate(e.target.value)}
@@ -171,23 +168,23 @@ export const AddBook = () => {
               type="text"
             />
             <Input
-              label="cost"
+              label="Cost"
               name="cost"
               value={cost}
               onChange={(e) => setCost(e.target.value)}
               placeholder="489"
               type="text"
             />
-
             <Input
-              label="rack"
+              label="Rack"
               name="rack"
-              value={rackno}
-              onChange={(e) => setRackno(e.target.value)}
-              placeholder="a-1"
+              value={rack}
+              onChange={(e) => setRack(e.target.value)}
+              placeholder="a_1"
               type="text"
             />
           </div>
+          {error && <p className="text-red-500 text-center">{error}</p>}
           <div className="w-61 flex justify-center items-center mb-2">
             <Button size="lg">Submit</Button>
           </div>
