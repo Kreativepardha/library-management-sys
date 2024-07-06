@@ -117,7 +117,7 @@ export const Register = () => {
                <Button  size="lg" >      
                         register
                     </Button>
-                    <p className="mt-2 p-2" >Already have an  account? <span  className="cursor-pointer text-sky-600" onClick={() => navigate("/")}>login</span>    </p>
+                    {/* <p className="mt-2 p-2" >Already have an  account? <span  className="cursor-pointer text-sky-600" onClick={() => navigate("/")}>login</span>    </p> */}
 
         </form>
 

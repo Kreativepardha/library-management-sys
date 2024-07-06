@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const BookCard = ({ book }) => {
+export const BookCard = ({ book,showDetails,toggleDetails }) => {
   const {
     accessionNo,
     author,
@@ -14,20 +14,22 @@ export const BookCard = ({ book }) => {
     cost,
     rack,
   } = book;
-  const [showDetails, setShowDetails] = useState(false);
+  // const [showDetails, setShowDetails] = useState(false);
 
-  const toggleDetails = () => {
-    setShowDetails(!showDetails);
-  };
+  // const toggleDetails = () => {
+  //   setShowDetails(!showDetails);
+  // };
 
   return (
-    <div className="p-4 shadow-md shadow-yellow-300 cursor-pointer pb-4 max-w-screen-lg rounded-lg w-60 hover:bg-sky-300 ">
-      <div className="bg-yellow-200 rounded-xl w-18 p-2 m-2 hover:bg-white">
+    <div className="p-4 shadow-md shadow-yellow-300 cursor-pointer pb-4 max-w-screen-lg rounded-lg w-60  ">
+      <div className="bg-yellow-200 rounded-xl w-18 p-2 m-2 ">
         <h1 className="font-extrabold text-center">Title: {title}</h1>
         <h1 className="font-extrabold text-center"> Author: {author}</h1>
       </div>
       <div onClick={toggleDetails} className="w-8 h-8 relative left-36 p-2 flex items-center justify-center">
-        <span className="font-bold text-nowrap ">show Details</span>
+        <span className="font-bold text-nowrap ">
+        {showDetails ? "Hide Details" : "Show Details"}
+          </span>
       </div>
 
       {showDetails && (
@@ -43,7 +45,7 @@ export const BookCard = ({ book }) => {
           <h1 className="font-extrabold">Source: {source}</h1>
           <h1 className="font-extrabold">Bill Date: {billdate}</h1>
           <h1 className="font-extrabold">Cost: {cost}</h1>
-          <h1 className="font-extrabold">Rack: {rack}</h1>
+          <h1 className="font-extrabold">Rack: {rack}</h1>j
             </div>
           <button className="absolute top-2 right-2 border-none bg-white px-2 py-2 rounded-md hover:bg-yellow-200 cursor-pointer"
            

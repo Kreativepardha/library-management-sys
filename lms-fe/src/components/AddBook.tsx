@@ -2,7 +2,6 @@ import { FormEvent, useState } from "react";
 import Input from "../components/Input";
 import { BACKEND_URL } from "../config";
 import { Button } from "../components/Button";
-import { Navbar } from "./Navbar";
 
 export const AddBook = () => {
   const [accessionNo, setAccessionNo] = useState("");
@@ -94,7 +93,6 @@ export const AddBook = () => {
 
   return (
     <>
-      <Navbar />
       <div className="h-screen w-full flex justify-center items-center bg-sky-300">
         <form
           onSubmit={handleSubmit}

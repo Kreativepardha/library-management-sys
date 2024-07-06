@@ -8,15 +8,17 @@ import { AddBook } from './components/AddBook'
 import { Students } from './pages/Students'
 import { Register } from './pages/Register'
 import { Loading } from './components/Loading'
+import Navbar from './components/Navbar'
 
 function App() {
 
   return (
     <>
     <BrowserRouter>
+    <Navbar />
         <Routes>
           <Route path='/' element={<Login />}  />
-          <Route path='/register' element={<Register />}  />
+          <Route path='/addstudent' element={<Register />}  />
           <Route path='/dashboard' element={<Dashboard />}  />
           <Route path='/books' element={<Books />}  />
           <Route path='/students' element={<Students />}  />

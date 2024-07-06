@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Navbar } from "../components/Navbar";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { StudentCard } from "../components/StudentCard";
@@ -47,7 +46,6 @@ export const Students = () => {
 
   return (
     <div>
-      <Navbar />
       <div className="p-6">
         {loading ? (
          <Loading />
