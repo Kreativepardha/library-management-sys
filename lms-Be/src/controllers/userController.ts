@@ -27,15 +27,15 @@ export const createUser = async (req: any, res: any) => {
                 message: "Email already taken"
             });
         }
-        const salt = 10;
-        const hashedPassword = await bcrypt.hash(password, salt);
-        const user = await User.create({
+        // const salt = 10;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newuser = await User.create({
             name,
             email,
             password: hashedPassword,
             is_admin: is_admin ?? false
         });
-        const userId = user._id;
+        const userId = newuser._id;
         const token = jwt.sign({ userId }, process.env.JWT_SECRET as string);
         res.json({
             message: "User created successfully",
@@ -68,9 +68,7 @@ export const getUser = async (req:any,res:any) => {
 }
 
 export const getAllUsers = async(req:any,res:any) => {
-    await User
-    .find({})
-    .then((users) => {
+ await User.find({}).then((users) => {
         return res.status(200).json({
             users,
         })

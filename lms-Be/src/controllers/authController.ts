@@ -1,5 +1,5 @@
 import { User } from "../models/userModel";
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -10,6 +10,7 @@ export const loginUser = async (req: any, res: any) => {
         if (!email || !password) {
             return res.status(400).json({ msg: "Please enter all the credentials" });
         }
+
         const userExist = await User.findOne({ email });
         if (!userExist) {
             return res.status(404).json({ msg: "User does not exist. Please signup" });
@@ -18,7 +19,8 @@ export const loginUser = async (req: any, res: any) => {
         if (!isPassValid) {
             return res.status(401).json({ msg: "Invalid password" });
         }
-        const token = jwt.sign({ userId: userExist._id }, process.env.JWT_SECRET as string);
+        const token = jwt.sign({ userId: userExist._id }, process.env.JWT_SECRET as string) ;
+        
         res.json({
             email: userExist.email,
             name: userExist.name,

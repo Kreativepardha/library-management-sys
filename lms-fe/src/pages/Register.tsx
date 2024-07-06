@@ -78,19 +78,18 @@ export const Register = () => {
     }
 
     return <>
-    <Navbar />
     <div className="flex justify-center items-center h-screen">
-        <form  onSubmit={handleSubmit} className="border-2 rounded-lg p-8  w-80 bg-white drop-shadow-lg  shadow-md">
+        <form  onSubmit={handleSubmit} className="border-2 rounded-lg p-8  w-80 bg-sky-200 drop-shadow-lg  shadow-md">
             {
                 error && <p className="text-red-500 text-center mb-4" > {error} </p>
             }
-            <h1 className="font-extrabold text-center" >Add Student</h1>
+            <h1 className="font-extrabold text-center" >Register</h1>
             <Input  
                 placeholder="enter name"
                 type="name"
                 value={name}
                 name="name"
-                label="name id" 
+                label="name" 
                 onChange={handleNameChange}
                 error={nameError}
                 
@@ -118,7 +117,8 @@ export const Register = () => {
                <Button  size="lg" >      
                         register
                     </Button>
-                   
+                    <p className="mt-2 p-2" >Already have an  account? <span  className="cursor-pointer text-sky-600" onClick={() => navigate("/")}>login</span>    </p>
+
         </form>
 
     </div>

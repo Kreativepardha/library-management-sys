@@ -4,11 +4,12 @@ import { createUser, deleteUser, getAllUsers, getUser } from '../controllers/use
 import { isAdmin, isAuthenticated } from '../middlewares/auth';
 const router = express.Router();
 
-//  route ////\\\\\\\/\/\/\/\\/\/\//\///\\////\\/\/\//\//\/\\/\/\\/\//\//\/\//\/\/\/\/\//\\\/\\/\/\/\/\/\/\//\/\\\\\\\\\\\\\\\\/\/\\/\\/\/\/\/\/\/\/\/\//\/\
 router.post("/",createUser)
 router.get("/:id", isAuthenticated, getUser)
-router.get("/",isAdmin, getAllUsers)
+router.get("/", isAdmin,getAllUsers)
 router.delete("/:id", isAdmin, deleteUser)
 
 
+
 export { router as userRouter}
+

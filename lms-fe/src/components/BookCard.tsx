@@ -21,8 +21,8 @@ export const BookCard = ({ book }) => {
   };
 
   return (
-    <div className="p-4 shadow-md shadow-slate-300 cursor-pointer pb-4 max-w-screen-lg rounded-lg w-60">
-      <div className="bg-yellow-200 rounded-xl w-18 p-2 m-2">
+    <div className="p-4 shadow-md shadow-yellow-300 cursor-pointer pb-4 max-w-screen-lg rounded-lg w-60 hover:bg-sky-300 ">
+      <div className="bg-yellow-200 rounded-xl w-18 p-2 m-2 hover:bg-white">
         <h1 className="font-extrabold text-center">Title: {title}</h1>
         <h1 className="font-extrabold text-center"> Author: {author}</h1>
       </div>
@@ -31,9 +31,9 @@ export const BookCard = ({ book }) => {
       </div>
 
       {showDetails && (
-        <div className="absolute top-50% left-50% p-12 z-50 border-2 shadow-lg shadow-slate-600 rounded-md bg-slate-200"
+        <div className="absolute top-50% left-50% p-8 z-50 border-2 shadow-lg shadow-slate-600 rounded-md bg-white"
         >
-            <div className="bg-yellow-200 p-2 rounded-lg">
+            <div className="bg-slate-100  p-2 rounded-lg">
 
           <h1 className="font-bold">Accesion no: {accessionNo}</h1>
           <h1 className="font-extrabold">Edition: {edition}</h1>

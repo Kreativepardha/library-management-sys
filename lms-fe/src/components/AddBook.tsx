@@ -1,6 +1,5 @@
 import { FormEvent, useState } from "react";
 import Input from "../components/Input";
-import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { Button } from "../components/Button";
 import { Navbar } from "./Navbar";
@@ -16,17 +15,15 @@ export const AddBook = () => {
   const [source, setSource] = useState("");
   const [billdate, setBilldate] = useState("");
   const [cost, setCost] = useState("");
-  const [rack, setRack] = useState("");
+  const [rackno, setRackno] = useState("");
   const [error, setError] = useState("");
 
-  // Function to retrieve token from local storage
   const getToken = () => {
     const token = localStorage.getItem("token");
-    console.log("Retrieved token:", token); // Log to check token retrieval
+    console.log("Retrieved token:", token); 
     return token;
   };
 
-  // Function to handle form submission
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const token = getToken();
@@ -35,32 +32,42 @@ export const AddBook = () => {
       return;
     }
 
+    const payload = {
+      accessionNo,
+      author,
+      edition,
+      title,
+      pages: parseInt(pages, 10), 
+      volume,
+      publisher,
+      source,
+      billdate,
+      cost: parseFloat(cost), 
+      rackno, 
+    };
+
     try {
-      console.log("Before Axios POST request"); // Debugging log
-      const response = await axios.post(
-        `${BACKEND_URL}/api/v1/book`,
-        {
-          accessionNo,
-          author,
-          edition,
-          title,
-          pages,
-          volume,
-          publisher,
-          source,
-          billdate,
-          cost,
-          rack,
+      console.log("Before fetch POST request"); 
+      console.log("Token:", token); 
+      console.log("Payload:", JSON.stringify(payload)); 
+
+      const response = await fetch(`${BACKEND_URL}/api/v1/book`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Ensure the token is passed correctly
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("After Axios POST request"); // Debugging log
-      console.log(response.data);
+        body: JSON.stringify(payload),
+      });
+
+      console.log("After fetch POST request"); 
+      console.log("Response:", response);
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(errorMessage);
+      }
+
       alert("Book added successfully!");
 
       // Reset form fields
@@ -74,10 +81,10 @@ export const AddBook = () => {
       setSource("");
       setBilldate("");
       setCost("");
-      setRack("");
+      setRackno("");
     } catch (err) {
-      console.error("Error in Axios POST request", err); // More specific error log
-      if (axios.isAxiosError(err) && err.response?.status === 401) {
+      console.error("Error in fetch POST request", err); 
+      if (err.message.includes("Unauthorized")) {
         setError("Unauthorized: Invalid token. Please log in again.");
       } else {
         setError("An error occurred during registration. Please try again.");
@@ -177,9 +184,9 @@ export const AddBook = () => {
             />
             <Input
               label="Rack"
-              name="rack"
-              value={rack}
-              onChange={(e) => setRack(e.target.value)}
+              name="rackno"
+              value={rackno}
+              onChange={(e) => setRackno(e.target.value)}
               placeholder="a_1"
               type="text"
             />

@@ -67,7 +67,7 @@ export const Login = () => {
     }
 
     return <div className="flex justify-center items-center h-screen">
-        <form  onSubmit={handleSubmit} className="border-2 rounded-lg p-8  w-80 bg-white drop-shadow-lg  shadow-md">
+        <form  onSubmit={handleSubmit} className="border-2 rounded-lg p-8  w-80 bg-sky-200 drop-shadow-lg  shadow-md">
             {
                 error && <p className="text-red-500 text-center mb-4" > {error} </p>
             }
@@ -92,10 +92,11 @@ export const Login = () => {
                 error={passwordError}
             />
 
-               <Button  size="lg" >      
+               <Button  size="lg" variant="secondary">      
                         Submit
                     </Button>
-                   
+                    <p className="mt-2 p-2" >Don't have an  account?  <span  className="cursor-pointer text-sky-600" onClick={() => navigate("/register")}>Register</span>    </p>
+
         </form>
 
     </div>

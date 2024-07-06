@@ -20,6 +20,7 @@ const bookBody = zod.object({
 export const createBook = async (req:any, res:any) => {
   try {
     const result = bookBody.safeParse(req.body)
+    console.log("RESult"+result)
     if(!result.success){
         return res.status(400).json({
             msg:"Invalid Input",
@@ -27,6 +28,7 @@ export const createBook = async (req:any, res:any) => {
         })
     }
         const newBook = new Book(result.data)
+        console.log("NEW boooookd"+newBook)
         await newBook.save();
 
         return res.status(201).json({
@@ -44,8 +46,10 @@ export const createBook = async (req:any, res:any) => {
 
 export const getAllBook = async (req:any, res:any) => { 
     try {
-            const books = await Book.find()
-            res.status(200).json(books)
+        const { page = 1, limit = 10 } = req.query;
+        const skip = (page - 1) * limit;
+        const books = await Book.find().skip(skip).limit(parseInt(limit, 10));
+        res.json(books);
     } catch (err) {
         res.status(500).json({
             message: "Server error",

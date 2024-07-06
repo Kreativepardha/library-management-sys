@@ -18,11 +18,20 @@ export const Books = () => {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
+  const getToken = () => {
+    const token = localStorage.getItem("token")
+    return token;
+  }
   useEffect(() => {
     const fetchBooks = async () => {
+      const token = getToken()
       setLoading(true);
       try {
-        const response = await axios.get(`${BACKEND_URL}/api/v1/book`);
+        const response = await axios.get(`${BACKEND_URL}/api/v1/book`,{
+          headers: {
+            Authorization: token
+          }
+        });
         setBooks(response.data);
       } catch (err) {
         console.error(err);

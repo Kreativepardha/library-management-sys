@@ -9,11 +9,20 @@ export const Students = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const getToken = () => {
+      const token = localStorage.getItem("token")
+      return token;
+  }
   useEffect(() => {
     const fetchStudents = async () => {
+
+      const token = getToken()
       try {
-        const response = await axios.get(`${BACKEND_URL}/api/v1/user`);
+        const response = await axios.get(`${BACKEND_URL}/api/v1/user`,{
+          headers: {
+            Authorization:token
+          }
+        });
         if (response.data && Array.isArray(response.data.users)) {
           setStudents(response.data.users);
         } else {

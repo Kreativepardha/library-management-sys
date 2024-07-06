@@ -32,7 +32,7 @@ export const Navbar = () => {
                         <Button size="lg" variant="ghost" onClick={() => navigate("/books") }>Books</Button>
                         <Button size="lg" variant="ghost" onClick={() => navigate("/addbook")}  >Add Book</Button>
                         <Button size="lg" variant="ghost" onClick={() => navigate("/students")}  >students</Button>
-                        <Button  size="lg" variant="ghost" onClick={() => navigate("/register") } >Add students</Button>
+                        <Button  size="lg" variant="ghost" >Issued Books</Button>
                         <Button  size="lg" variant="ghost"  onClick={handleLogout} >Logout</Button>
                 </div>
         </nav>
