@@ -2,6 +2,7 @@ import zod from 'zod'
 import {User} from '../models/userModel'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { Student } from '../models/studentModel'
 
 const signupBody = zod.object({
     name:zod.string(),
@@ -13,8 +14,8 @@ const signupBody = zod.object({
 
 
 export const createUser = async (req: any, res: any) => {
-    const { name, email, password, is_admin } = req.body;
     const { success } = signupBody.safeParse(req.body);
+    const { name, email, password, is_admin } = req.body;
     if (!success) {
         return res.status(411).json({
             message: "Email already taken / Invalid input "
@@ -78,23 +79,21 @@ export const getAllUsers = async(req:any,res:any) => {
 }
 
 export const deleteUser = async (req:any,res:any) => {  
-    const { id } = req.params;
-
-
     try {
-        const deletedUser = await User.findByIdAndDelete(id);
-        if(!deletedUser) {
-            return res.status(404).json( { msg: "User not found" });
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({ msg: 'Missing student ID' });
         }
-        res.status(200).json({
-            user: {
-                id: deletedUser._id,
-                name: deletedUser.name,
-                email: deletedUser.email,
-                is_admin: deletedUser.is_admin,
-            },
-        })
-    } catch (err) {
+
+        const student = await Student.findByIdAndDelete(id);
+
+        if (!student) {
+            return res.status(404).json({ msg: 'Student not found' });
+        }
+
+        return res.status(200).json({ msg: 'Student deleted successfully' });
+    }catch (err) {
         console.error(err);
         res.status(500).json({ msg: "Server Error"});
     }

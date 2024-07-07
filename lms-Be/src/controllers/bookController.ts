@@ -46,10 +46,34 @@ export const createBook = async (req:any, res:any) => {
 
 export const getAllBook = async (req:any, res:any) => { 
     try {
-        const { page = 1, limit = 10 } = req.query;
+        let { page = 1, limit = 10, search = '' } = req.query;
+        page = parseInt(page, 10);
+        limit = parseInt(limit, 10);
+    
         const skip = (page - 1) * limit;
-        const books = await Book.find().skip(skip).limit(parseInt(limit, 10));
-        res.json(books);
+    
+        const filter: any = {};
+        if (search) {
+            const regexFilter = { $regex: new RegExp(search, 'i') };
+            filter.$or = [
+                { title: regexFilter },
+                { author: regexFilter },
+                { accessionNo: regexFilter },
+            ];
+        }
+    
+        const books = await Book.find(filter)
+            .skip(skip)
+            .limit(limit);
+        
+        const totalBooks = await Book.countDocuments(filter);
+    
+        const totalPages = Math.ceil(totalBooks / limit);
+    
+        res.json({
+            books,
+            totalPages,
+        });
     } catch (err) {
         res.status(500).json({
             message: "Server error",

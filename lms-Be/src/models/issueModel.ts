@@ -1,19 +1,20 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 
-const issueSchema = new mongoose.Schema({
-        book: {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"book"
-        },
-        user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref:"user"
-        }
+export interface IssueDocument extends Document {
+    issuedDate: Date;
+    book?: mongoose.Types.ObjectId | null;
+    student?: mongoose.Types.ObjectId | null;
+    returned: boolean; 
+}
 
-})
+const issueSchema = new Schema({
+    issuedDate: { type: Date, required: true },
+    book: { type: Schema.Types.ObjectId, ref: 'Book' },
+    student: { type: Schema.Types.ObjectId, ref: 'Student' ,required:true},
+    returned: { type: Boolean, default: false }, 
+});
 
-
-const Issue = mongoose.model('Issue', issueSchema)
+const Issue = mongoose.model<IssueDocument>('Issue', issueSchema);
 
 export {
     Issue

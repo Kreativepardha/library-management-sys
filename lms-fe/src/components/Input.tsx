@@ -12,11 +12,12 @@ interface InputProps{
     error?:boolean,
     classname?:string,
     onChange:(e: ChangeEvent<HTMLInputElement>) => void
+    required?:boolean
 }
 
 
 export const Input: React.FC<InputProps> = ({
-    type,placeholder,label,name,value,error,onChange,classname
+    type,placeholder,label,name,value,error,onChange,classname,required
 }) => {
     return <div className="mb-4 p-2 ">
         <label className="block text-sm  font-extrabold  pl-1 capitalize   mb-1" >{label}</label>
@@ -26,6 +27,7 @@ export const Input: React.FC<InputProps> = ({
             name={name}
             onChange={onChange}
             value={value}
+            required={false}
             className={`w-full p-2 border ${error ? 'border-red-200' : 'border-gray-200 '} rounded-md text-black`}
         />
         { error && <span    className="text-red-400 text-sm mt-1" >Error: Invalid input</span>  }

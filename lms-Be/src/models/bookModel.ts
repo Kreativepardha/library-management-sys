@@ -1,24 +1,39 @@
-import mongoose  from "mongoose";
+import mongoose, { Document, Model } from 'mongoose';
 
-const bookSchema = new mongoose.Schema({
-    accessionNo: { type: String, required: true, unique: true },
-    author: { type: String, required: true },
-    title: { type: String, required: true },
-    edition: { type: String, required: true },
-    pages: { type: Number, required: true },
-    volume: { type: String, required: true },
-    publisher: { type: String, required: true },
-    source: { type: String, required: true },
-    billdate: { type: Date, required: true },
-    cost: { type: Number, required: true },
-    rackno: { type: String, required: true },
-    withdrawldate: { type: Date } // Optional field
+export interface BookDocument extends Document {
+  accessionNo: string;
+  author: string;
+  title: string;
+  edition: string;
+  pages: number;
+  volume: string;
+  publisher: string;
+  source: string;
+  billdate: Date;
+  cost: number;
+  rackno: string;
+  withdrawldate?: Date;
+}
+
+const bookSchema = new mongoose.Schema<BookDocument>({
+  accessionNo: { type: String, required: true, unique: true },
+  author: { type: String, required: true },
+  title: { type: String, required: true },
+  edition: { type: String, required: true },
+  pages: { type: Number, required: true },
+  volume: { type: String, required: true },
+  publisher: { type: String, required: true },
+  source: { type: String, required: true },
+  billdate: { type: Date, required: true },
+  cost: { type: Number, required: true },
+  rackno: { type: String, required: true },
+  withdrawldate: { type: Date } // Optional field
 }, {
-    timestamps: true
+  timestamps: true
 });
 
+const Book: Model<BookDocument> = mongoose.model<BookDocument>('Book', bookSchema);
 
-const Book = mongoose.model('Book', bookSchema)
 
 export {
     Book

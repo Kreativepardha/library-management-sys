@@ -33,6 +33,7 @@ export const Books = () => {
   };
   const fetchBooks = useCallback(async (page: number) => {
     const token = getToken();
+    console.log(token)
     setLoading(true);
     try {
       const response = await axios.get<ApiResponse>(`${BACKEND_URL}/api/v1/book`, {

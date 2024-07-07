@@ -8,22 +8,24 @@ export const Students = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   const getToken = () => {
-      const token = localStorage.getItem("token")
-      return token;
-  }
+    const token = localStorage.getItem("token");
+    return token;
+  };
+
   useEffect(() => {
     const fetchStudents = async () => {
-
-      const token = getToken()
+      const token = getToken();
       try {
-        const response = await axios.get(`${BACKEND_URL}/api/v1/user`,{
+        const response = await axios.get(`${BACKEND_URL}/api/v1/student`, {
           headers: {
-            Authorization:token
-          }
+            Authorization: token,
+          },
         });
-        if (response.data && Array.isArray(response.data.users)) {
-          setStudents(response.data.users);
+
+        if (response.data && Array.isArray(response.data)) {
+          setStudents(response.data);
         } else {
           setStudents([]);
           console.error("Unexpected response format", response.data);
@@ -48,12 +50,10 @@ export const Students = () => {
     <div>
       <div className="p-6">
         {loading ? (
-         <Loading />
-        ) 
-        // : error ? (
-        //   <p>{error}</p>
-        // ) 
-        : (
+          <Loading />
+        ) : error ? (
+          <p>{error}</p>
+        ) : (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {students.map((student) => (
               <StudentCard key={student._id} student={student} />

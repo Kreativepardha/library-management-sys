@@ -46,9 +46,9 @@ export const AddBook = () => {
     };
 
     try {
-      console.log("Before fetch POST request"); 
-      console.log("Token:", token); 
-      console.log("Payload:", JSON.stringify(payload)); 
+      // console.log("Before fetch POST request"); 
+      // console.log("Token:", token); 
+      // console.log("Payload:", JSON.stringify(payload)); 
 
       const response = await fetch(`${BACKEND_URL}/api/v1/book`, {
         method: "POST",
@@ -59,8 +59,8 @@ export const AddBook = () => {
         body: JSON.stringify(payload),
       });
 
-      console.log("After fetch POST request"); 
-      console.log("Response:", response);
+      // console.log("After fetch POST request"); 
+      // console.log("Response:", response);
 
       if (!response.ok) {
         const errorMessage = await response.text();
@@ -69,7 +69,6 @@ export const AddBook = () => {
 
       alert("Book added successfully!");
 
-      // Reset form fields
       setAccessionNo("");
       setAuthor("");
       setEdition("");
@@ -93,10 +92,10 @@ export const AddBook = () => {
 
   return (
     <>
-      <div className="h-screen w-full flex justify-center items-center bg-sky-300">
+      <div className="h-screen w-full flex mt-10 justify-center items-center bg-sky-300">
         <form
           onSubmit={handleSubmit}
-          className="w-92 border-t-2 shadow-lg rounded-lg absolute bg-yellow-200"
+          className="w-92 border-t-2 shadow-lg rounded-md absolute bg-white shadow-slate-300"
         >
           <h1 className="font-extrabold text-center mt-4 text-slate-900">Add Book</h1>
           <div className="grid grid-cols-2 m-4">
@@ -138,7 +137,7 @@ export const AddBook = () => {
               value={pages}
               onChange={(e) => setPages(e.target.value)}
               placeholder="230"
-              type="text"
+              type="number"
             />
             <Input
               label="Volume"
@@ -178,7 +177,7 @@ export const AddBook = () => {
               value={cost}
               onChange={(e) => setCost(e.target.value)}
               placeholder="489"
-              type="text"
+              type="number"
             />
             <Input
               label="Rack"
