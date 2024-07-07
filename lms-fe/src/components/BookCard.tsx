@@ -33,9 +33,9 @@ export const BookCard = ({ book,showDetails,toggleDetails }) => {
       </div>
 
       {showDetails && (
-        <div className="absolute top-50% left-50% p-8 z-50 border-2 shadow-lg shadow-slate-600 rounded-md bg-white"
+        <div className="bg-white hover:shadow-lg top-50% left-50% p-8 z-50 border-2 shadow-md hover:shadow-slate-600 shadow-slate-400 rounded-sm  absolute"
         >
-            <div className="bg-slate-100  p-2 rounded-lg">
+            <div className="shadow-lg  p-2 rounded-lg">
 
           <h1 className="font-bold">Accesion no: {accessionNo}</h1>
           <h1 className="font-extrabold">Edition: {edition}</h1>

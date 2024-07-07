@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { Button } from "../components/Button";
+import Input from "../components/Input";
 
 const IssueBookModal = ({ studentId, onClose }) => {
   const [bookId, setBookId] = useState("");
@@ -9,20 +10,23 @@ const IssueBookModal = ({ studentId, onClose }) => {
   const [error, setError] = useState("");
   const [successMsg, setSuccessMsg] = useState(null);
 
-  const handleIssueBook = async (e) => {
+  const handleIssueBook = async (e: FormEvent) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
+      const payload = {
+          id: studentId, 
+            accessionNo: bookId,
+            issuedDate: issuedDate,
+      }
+      console.log(payload)
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/issue`,
-        {
-          book_id: bookId,
-          student_id: studentId, // Use the passed student ID
-          issuedDate: issuedDate,
-        },
+      payload,
         {
           headers: {
             Authorization: token,
+            "Content-Type": "application/json",
           },
         }
       );
@@ -39,14 +43,14 @@ const IssueBookModal = ({ studentId, onClose }) => {
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-gray-600 bg-opacity-75 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
+      <div className="bg-white w-2/4 p-8 rounded-lg shadow-lg">
         <h2 className="text-xl font-bold mb-4">Issue Book</h2>
         <form onSubmit={handleIssueBook}>
           <div className="form-group">
-            <label htmlFor="bookId">Book ID:</label>
-            <input
+            <label htmlFor="bookId">Accession No:</label>
+            <Input
+            placeholder="enter accession no"
               type="text"
-              id="bookId"
               value={bookId}
               onChange={(e) => setBookId(e.target.value)}
               required
@@ -54,17 +58,17 @@ const IssueBookModal = ({ studentId, onClose }) => {
           </div>
           <div className="form-group">
             <label htmlFor="issuedDate">Issued Date:</label>
-            <input
+            <Input
+            placeholder="enter date"
               type="date"
-              id="issuedDate"
               value={issuedDate}
               onChange={(e) => setIssuedDate(e.target.value)}
               required
             />
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-around">
             <Button type="submit">Issue Book</Button>
-            <Button variant="outline" onClick={onClose}>
+            <Button variant="destructive" onClick={onClose}>
               Cancel
             </Button>
           </div>

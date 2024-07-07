@@ -117,8 +117,8 @@ const payload = {
   };
 
   return (
-    <div className="p-4">
-      <form onSubmit={handleSubmit}>
+    <div className="p-4 mt-20 flex justify-center items-center w-xl ">
+      <form onSubmit={handleSubmit} className="w-1/3 shadow-md shadow-slate-200 hover:shadow-lg p-4">
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <h1 className="text-center mb-6 text-2xl font-bold">Add Student</h1>
         <Input
@@ -178,7 +178,9 @@ const payload = {
           </select>
           {deptError && <span className="text-red-400 text-sm mt-1">Error: Department is required</span>}
         </div>
-        <Button type="submit">Add</Button>
+        <div className=" flex justify-center items-center">
+        <Button type="submit" size="lg" variant="default" >Add</Button>
+        </div>
       </form>
     </div>
   );

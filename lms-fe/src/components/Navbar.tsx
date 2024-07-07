@@ -44,7 +44,7 @@ const Navbar = () => {
 
     return (
         <nav className={classNames(
-            "fixed top-0 mx-auto flex w-full max-w-8xl justify-between px-4 py-4 text-sm bg-sky-200 bg-opacity-90",
+            "fixed top-0 mx-auto flex w-full max-w-8xl justify-between px-4 py-4 text-sm bg-sky-200 bg-opacity-90 mb-20",
             scrolled && "shadow-sm shadow-slate-400"
         )}>
                 <img src={logo2} alt="logo" width="75" className="absolute ml-2 top-0"/>
@@ -67,9 +67,9 @@ const Navbar = () => {
                                     <BiBookAdd className="transition-all" />
                                     <span className="whitespace-nowrap pl-3">Add Book</span>
                                 </Link>
-                                <Link to="#" className="flex items-center py-1 pl-6 pr-8 text-neutral-400 hover:text-black">
+                                <Link to="/displayissue" className="flex items-center py-1 pl-6 pr-8 text-neutral-400 hover:text-black">
                                     <FaBookReader className="transition-all" />
-                                    <span className="whitespace-nowrap pl-3">Issue Book</span>
+                                    <span className="whitespace-nowrap pl-3">Issued Books</span>
                                 </Link>
                             </div>
                         </div>

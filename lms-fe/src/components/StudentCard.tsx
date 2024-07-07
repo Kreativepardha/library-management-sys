@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import IssueBookModal from "../pages/IssueBook";
 import { Button } from "./Button";
+import IssueBookModal from "../pages/IssueBookModel";
 
 
 

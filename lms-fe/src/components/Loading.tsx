@@ -26,10 +26,10 @@ export const Loading = () => {
 }
 
 const CardSkeleton = () =>{
-    return     <div className="flex flex-row justify-evenly p-6 mb-12">
+    return     <div className="flex flex-row justify-evenly p-6 mb-12 animate-pulse">
 
-     <div className="p-4 shadow-md shadow-slate-300  cursor-pointer pb-4  max-w-screen-lg rounded-lg w-60  ">
-    <div className="bg-gray-200 rounded-xl w-18  p-2 m-2">.
+     <div className="p-8 shadow-md shadow-slate-300  cursor-pointer pb-4  max-w-screen-lg rounded-lg w-60  ">
+    <div className="bg-gray-100 rounded-xl w-18  p-2 m-2">.
 
 <h1 className="font-extrabold text-center "></h1>
 <h1 className="font-extrabold text-center "> </h1>

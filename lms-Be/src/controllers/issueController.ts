@@ -4,71 +4,44 @@ import { Student } from '../models/studentModel';
 import { Issue , IssueDocument} from '../models/issueModel';
 
 
-// export const returnBook = async (req: Request, res: Response) => {
-//     const { id } = req.params;
 
-//     if (!id) {
-//         return res.status(400).json({ msg: "ID not provided" });
-//     }
-
-//     try {
-//         const issue = await Issue.findById(id);
-
-//         if (!issue) {
-//             return res.status(404).json({ msg: "Issue not found" });
-//         }
-
-//         // Update returned status
-//         issue.returned = true;
-//         await issue.save();
-
-//         return res.status(200).json({
-//             msg: "Book returned successfully",
-//             issue
-//         });
-//     } catch (err) {
-//         console.error(err);
-//         return res.status(500).json({ msg: 'Server Error' });
-//     }
-// };
 
 export const issueBook = async (req: Request, res: Response) => {
-    const { book_id, student_id, issuedDate } = req.body;
+    const { id, accessionNo, issuedDate } = req.body;
 
-    if (!book_id || !student_id || !issuedDate) {
+    console.log('Received request to issue book:', { id, accessionNo, issuedDate });
+    
+    if (!id || !accessionNo || !issuedDate) {
+        console.log('Missing required fields:', { id, accessionNo, issuedDate });
         return res.status(400).json({
             msg: "Please enter all fields"
         });
     }
+
     try {
-        const book = await Book.findById(book_id);
-        const student = await Student.findById(student_id);
-
+        const student = await Student.findById(id);
+        const book = await Book.findOne({ accessionNo });
         if (!book) {
-            return res.status(404).json({ msg: "Book not valid" });
+            console.log('Book not found with accessionNo:', accessionNo);
+            return res.status(404).json({ msg: "Book not found" });
         }
-
         if (!student) {
-            return res.status(404).json({ msg: "Student not valid" });
+            console.log('Student not found with id:', id);
+            return res.status(404).json({ msg: "Student not found" });
         }
-        const existingIssue = await Issue.findOne({ book: book._id, returned: false });
-        
+        const existingIssue = await Issue.findOne({ book: book._id, student: student._id, returned: false });
         if (existingIssue) {
-            return res.status(400).json({ msg: "Book is already issued" });
+            return res.status(400).json({ msg: "Book is already issued to this student" });
         }
-
         const issue = new Issue({
             student: student._id,
             book: book._id,
             issuedDate: new Date(issuedDate)
         });
-
         await issue.save();
-    
         await Student.findByIdAndUpdate(student._id, {
             $push: { issuedBooks: issue._id }
         });
-    
         return res.status(200).json({
             msg: "Book issued to the student",
             issue
@@ -78,6 +51,7 @@ export const issueBook = async (req: Request, res: Response) => {
         return res.status(500).json({ msg: "Server Error" });
     }
 };
+
 
 export const getAllIssuedBooks = async (req: Request, res: Response) => {
     try {
