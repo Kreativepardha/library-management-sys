@@ -8,9 +8,9 @@ export interface IssueDocument extends Document {
 }
 
 const issueSchema = new Schema({
-    issuedDate: { type: Date, required: true },
+    issuedDate: { type: Date },
     book: { type: Schema.Types.ObjectId, ref: 'Book' },
-    student: { type: Schema.Types.ObjectId, ref: 'Student' ,required:true},
+    student: { type: Schema.Types.ObjectId, ref: 'Student' },
     returned: { type: Boolean, default: false }, 
 });
 

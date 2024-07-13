@@ -8,7 +8,7 @@ router.post("/", isAdmin,issueBook)
 router.get("/",isAdmin, getAllIssuedBooks)
 router.get("/:id",isAdmin, getIssuedBookById)
 router.get("/returned",isAdmin, getReturnedBooks)
-router.post("/returned/:id",isAdmin, returnBook)
+router.put("/returned/:id",isAdmin, returnBook)
 
 
 

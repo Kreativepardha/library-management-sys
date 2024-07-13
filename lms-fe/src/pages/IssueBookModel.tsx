@@ -34,7 +34,7 @@ const IssueBookModal = ({ studentId, onClose }) => {
       setBookId("");
       setIssuedDate("");
       setError("");
-      onClose(); // Close the modal after successful issue
+      onClose(); 
     } catch (err) {
       console.error(err);
       setError("Failed to issue book. Please try again later.");

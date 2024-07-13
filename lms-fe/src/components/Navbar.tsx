@@ -71,6 +71,10 @@ const Navbar = () => {
                                     <FaBookReader className="transition-all" />
                                     <span className="whitespace-nowrap pl-3">Issued Books</span>
                                 </Link>
+                                <Link to="/returned" className="flex items-center py-1 pl-6 pr-8 text-neutral-400 hover:text-black">
+                                    <FaBookReader className="transition-all" />
+                                    <span className="whitespace-nowrap pl-3">Returned Books</span>
+                                </Link>
                             </div>
                         </div>
                         <div className="relative group">

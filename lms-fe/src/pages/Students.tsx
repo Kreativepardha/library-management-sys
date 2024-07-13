@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { StudentCard } from "../components/StudentCard";
@@ -8,16 +8,19 @@ export const Students = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const getToken = () => {
-    const token = localStorage.getItem("token");
-    return token;
-  };
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
     const fetchStudents = async () => {
-      const token = getToken();
       try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          throw new Error("User is not authenticated.");
+        }
+
         const response = await axios.get(`${BACKEND_URL}/api/v1/student`, {
           headers: {
             Authorization: token,
@@ -27,17 +30,12 @@ export const Students = () => {
         if (response.data && Array.isArray(response.data)) {
           setStudents(response.data);
         } else {
-          setStudents([]);
           console.error("Unexpected response format", response.data);
-          setError("Failed to fetch students: Invalid response format");
+          throw new Error("Invalid response format");
         }
-      } catch (err) {
-        console.error(err);
-        if (err.response && err.response.data && err.response.data.err) {
-          setError(`Failed to fetch students: ${err.response.data.err.reason.type}`);
-        } else {
-          setError("Failed to fetch students: Unknown error");
-        }
+      } catch (error) {
+        console.error("Error fetching students:", error);
+        setError("Failed to fetch students. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -46,21 +44,64 @@ export const Students = () => {
     fetchStudents();
   }, []);
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(1); // Reset to the first page when searching
+  };
+
+  const filteredStudents = students.filter((student) =>
+    student.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedStudents = filteredStudents.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
   return (
-    <div>
-      <div className="p-6">
-        {loading ? (
-          <Loading />
-        ) : error ? (
-          <p>{error}</p>
-        ) : (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {students.map((student) => (
-              <StudentCard key={student._id} student={student} />
-            ))}
-          </div>
-        )}
+    <div className="p-6 mt-20">
+      <div className=" flex items-center justify-center">
+        <input
+          type="text"
+          placeholder="Search by student name"
+          value={searchTerm}
+          onChange={handleSearch}
+          className="p-2 w-80 border border-gray-300 rounded-md"
+        />
       </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {paginatedStudents.map((student) => (
+          <StudentCard key={student._id} student={student} />
+        ))}
+      </div>
+      {totalPages > 1 && (
+        <div className="mt-4 flex justify-center">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentPage(index + 1)}
+              className={`px-3 py-1 mx-1 rounded ${
+                index + 1 === currentPage
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-700"
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { Book } from '../models/bookModel';
 import { Student } from '../models/studentModel';
 import { Issue , IssueDocument} from '../models/issueModel';
+import { isValidObjectId } from 'mongoose';
 
 
 
@@ -93,6 +94,7 @@ export const returnBook = async (req: Request, res: Response) => {
         }
         issue.returned = true;
         await issue.save();
+        
         await Student.findByIdAndUpdate(issue.student, {
             $pull: { issuedBooks: issue._id }
         });
@@ -106,11 +108,11 @@ export const returnBook = async (req: Request, res: Response) => {
 
 
 export const getReturnedBooks = async (req: Request, res: Response) => {
-    try {
-        const returnedBooks = await Issue.find({ returned: true })
-            .populate('book')
-            .populate('student');
 
+    try {
+
+        const returnedBooks = await Issue.find({returned:true}).populate('book').populate('student');
+        console.log(returnedBooks)
         return res.status(200).json(returnedBooks);
     } catch (err) {
         console.error('Error fetching returned books:', err); 

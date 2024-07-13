@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "./Button";
 import IssueBookModal from "../pages/IssueBookModel";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -11,7 +12,7 @@ import IssueBookModal from "../pages/IssueBookModel";
 export const StudentCard = ({ student }) => {
   const { _id, name, hallTicket, year, batch, dept } = student;
   const [showModal, setShowModal] = useState(false);
-
+  const navigate =  useNavigate()
   const handleIssueClick = () => {
     setShowModal(true);
   };
@@ -25,7 +26,7 @@ export const StudentCard = ({ student }) => {
       <p>
         <strong>ID:</strong> {_id}
       </p>
-      <p>
+      <p className="font-extrabold">
         <strong>Name:</strong> {name}
       </p>
       <p>
@@ -51,8 +52,8 @@ export const StudentCard = ({ student }) => {
             onClose={handleCloseModal}
           />
         )}
-        <Button variant="destructive">Return</Button>
+        <Button variant="destructive" onClick={() => navigate("/displayissue") } >Return</Button>
       </div>
     </div>
   );
-};
+};  

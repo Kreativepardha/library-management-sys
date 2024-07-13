@@ -10,8 +10,9 @@ import Navbar from './components/Navbar'
 import { AddStudent } from './pages/AddsStudents'
 import { AddBook } from './pages/AddBook'
 // import IssueBook from './pages/IssueBook'
-import DisplayIssue from './pages/DisplayIssue'
 import { Books } from './pages/Books'
+import ReturnedBooks from './pages/ReturnedBooks'
+import DisplayIssue from './pages/DisplayIssue'
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
           <Route path='/students' element={<Students />}  />
           <Route path='/addbook' element={<AddBook />}  />
           <Route path='/displayissue' element={<DisplayIssue />}  />
+          <Route path='/returned' element={<ReturnedBooks />}  />
           <Route path='/loading' element={<Loading />}  />
         </Routes>
         </BrowserRouter>
