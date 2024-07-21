@@ -83,12 +83,13 @@ export const getIssuedBookById = async (req: Request, res: Response) => {
 
 export const returnBook = async (req: Request, res: Response) => {
     const { id } = req.params; 
-
+    console.log(id)
     try {
         if (!id) {
             return res.status(400).json({ msg: "ID not provided" });
         }
         const issue = await Issue.findById(id);
+        console.log(issue)
         if (!issue) {
             return res.status(404).json({ msg: "Issue not found" });
         }

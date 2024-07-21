@@ -38,7 +38,7 @@ export const createStudent = async(req: any, res: any) =>{
             message:"Invalid Inputs",
         })
     }
-    // const { name, hallTicket, year, batch, dept } = result.data as StudentProps;
+    // const { name, hallTicket, year, batch, dept } = result.data;
         try {
                const existingStudent = await Student.findOne({ hallTicket })
                if(existingStudent) return res.status(411).json({message: "Student already exits"})
@@ -67,9 +67,15 @@ export const getStudent = async (req: any, res: any) =>{
     if(!id) return res.json({msg:"id not provided"})
 
         try {
-            const student = await Student.findById(id).populate('issuedBooks');
-        
-            if (!student) return res.status(404).json({ msg: "Student not available" });
+            const student = await Student.findById(id).populate({
+                path: 'issuedBooks',
+                populate: {
+                    path: 'book', 
+                    select: 'title author' 
+                  }
+            });
+            console.log(student)
+                if (!student) return res.status(404).json({ msg: "Student not available" });
         
             return res.status(200).json(student);
         } catch (err) {
@@ -91,7 +97,6 @@ export const updateStudent = async (req: any, res: any) =>{
         )
         if(!updateStudent) return res.status(404).json({msg:"Student not found"})
 
-            // await updateStudent.populate('issuedBooks').execPopulate();
     
             return res.status(200).json({
                 message: "Updated successfully",

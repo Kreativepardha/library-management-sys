@@ -68,7 +68,7 @@ export const Students = () => {
   if (error) {
     return <p>Error: {error}</p>;
   }
-
+  
   return (
     <div className="p-6 mt-20">
       <div className=" flex items-center justify-center">

@@ -3,7 +3,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 
 export const isAuthenticated = async (req: any, res: any, next: any) => {
     const authHeader = req.headers.authorization;
-    console.log("authHeader in isAuthenticated:", authHeader); 
+    // console.log("authHeader in isAuthenticated:", authHeader); 
     if (!authHeader) {
         return res.status(401).json({ msg: "User is not authenticated" });
     }
@@ -22,18 +22,18 @@ export const isAuthenticated = async (req: any, res: any, next: any) => {
 
 export const isAdmin = async (req: any, res: any, next: any) => {
     const authHeader = req.headers.authorization;
-    console.log("authHeader in isAdmin:", authHeader);
+    // console.log("authHeader in isAdmin:", authHeader);
     if (!authHeader) {
         return res.status(401).json({ msg: "User is not authenticated" });
     }
     const token = authHeader.split(' ')[1]; 
-    console.log("Token in isAdmin:", token);
+    // console.log("Token in isAdmin:", token);
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
-        console.log("decoded in isAdmin:", decoded);
+        // console.log("decoded in isAdmin:", decoded);
         const user = await User.findById(decoded.userId);
-        console.log("user in isAdmin:", user);
+        // console.log("user in isAdmin:", user);`
         if (!user) {
             return res.status(401).json({ msg: "User does not exist" });
         }

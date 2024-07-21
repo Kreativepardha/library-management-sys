@@ -87,7 +87,9 @@ export const getAllBook = async (req:any, res:any) => {
 export const getBook = async (req:any, res:any) => {
         try {
             const {id } = req.params;
-                const book = await Book.findById(id)
+            console.log(id)
+                const book = await Book.find({_id:id})
+                console.log(book)
                     if(!book) {
                         return res.status(404).json({
                             message:"Book not Found"

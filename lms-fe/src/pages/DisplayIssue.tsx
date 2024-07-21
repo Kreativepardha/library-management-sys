@@ -51,7 +51,6 @@ export const DisplayIssue: React.FC = () => {
         });
 
         if (response.data && Array.isArray(response.data)) {
-          // Sort issuedBooks by issuedDate descending (latest first)
           const sortedBooks = response.data.sort((a, b) => {
             return new Date(b.issuedDate).getTime() - new Date(a.issuedDate).getTime();
           });
@@ -97,7 +96,6 @@ export const DisplayIssue: React.FC = () => {
 
       console.log(response.data);
 
-      // Update the returned status of the book in issuedBooks state
       setIssuedBooks((prevIssuedBooks) =>
         prevIssuedBooks.map((issue) =>
           issue._id === returningIssueId ? { ...issue, returned: true } : issue
