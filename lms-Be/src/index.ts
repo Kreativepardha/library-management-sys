@@ -16,7 +16,7 @@ const dbUrl = process.env.MONGO_URL as string;
 
 app.use(express.json())
 app.use(cors({
-    origin: 'http://localhost:5173', 
+   origin: process.env.CORS_ORIGIN || '*'
     credentials: true
 }));
 
