@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BACKEND_URL } from "../config";
 import { Loading } from "../components/Loading";
-import Modal from "../components/Modal"; // Assuming the Modal component path
+import Modal from "../components/Modal";
 
 interface Student {
   id: string;
@@ -17,7 +17,7 @@ interface Book {
 
 interface Issue {
   _id: string;
-  book: Book;
+  book?: Book; // Making book optional to handle possible null values
   student?: Student;
   issuedDate: string;
   returned?: boolean;
@@ -42,7 +42,7 @@ const ReturnedBooks: React.FC = () => {
 
         const response = await fetch(`${BACKEND_URL}/api/v1/issue`, {
           headers: {
-            Authorization:token,
+            Authorization: token,
           },
         });
 
@@ -80,9 +80,9 @@ const ReturnedBooks: React.FC = () => {
 
   const filteredBooks = returnedBooks.filter(
     (issue) =>
-      issue.book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      issue.book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      issue.book.accessionNo.includes(searchTerm) ||
+      issue.book?.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      issue.book?.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      issue.book?.accessionNo.includes(searchTerm) ||
       (issue.student &&
         issue.student.name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
@@ -124,12 +124,12 @@ const ReturnedBooks: React.FC = () => {
               key={issue._id}
               className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 ease-in-out"
             >
-              <h3 className="text-lg font-bold mb-2">{issue.book.title}</h3>
+              <h3 className="text-lg font-bold mb-2">{issue.book?.title}</h3>
               <p className="text-sm text-gray-600 font-bold">
-                <strong>Book:</strong> {issue.book.title} by {issue.book.author}
+                <strong>Book:</strong> {issue.book?.title} by {issue.book?.author}
               </p>
               <p className="text-sm text-gray-600">
-                <strong>Accession No:</strong> {issue.book.accessionNo}
+                <strong>Accession No:</strong> {issue.book?.accessionNo}
               </p>
               {issue.student && (
                 <>

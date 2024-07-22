@@ -6,7 +6,7 @@ export interface BookDocument extends Document {
   title: string;
   edition: string;
   pages: number;
-  volume: string;
+  volume: number;
   publisher: string;
   source: string;
   billdate: Date;
@@ -21,7 +21,7 @@ const bookSchema = new mongoose.Schema<BookDocument>({
   title: { type: String, required: true },
   edition: { type: String, required: true },
   pages: { type: Number, required: true },
-  volume: { type: String, required: true },
+  volume: { type: Number, required: true },
   publisher: { type: String, required: true },
   source: { type: String, required: true },
   billdate: { type: Date, required: true },

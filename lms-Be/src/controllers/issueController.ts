@@ -30,6 +30,9 @@ export const issueBook = async (req: Request, res: Response) => {
             console.log('Student not found with id:', id);
             return res.status(404).json({ msg: "Student not found" });
         }
+        if(book.volume <= 0) {
+            return res.status(400).json({ msg:"No copies Available to issue"  })
+        }
         const existingIssue = await Issue.findOne({ book: book._id, student: student._id, returned: false });
         if (existingIssue) {
             return res.status(400).json({ msg: "Book is already issued to this student" });
@@ -40,6 +43,9 @@ export const issueBook = async (req: Request, res: Response) => {
             issuedDate: new Date(issuedDate)
         });
         await issue.save();
+        book.volume -= 1;
+        await book.save()
+
         await Student.findByIdAndUpdate(student._id, {
             $push: { issuedBooks: issue._id }
         });
@@ -89,12 +95,18 @@ export const returnBook = async (req: Request, res: Response) => {
             return res.status(400).json({ msg: "ID not provided" });
         }
         const issue = await Issue.findById(id);
-        console.log(issue)
+        // console.log(issue)
         if (!issue) {
             return res.status(404).json({ msg: "Issue not found" });
         }
         issue.returned = true;
         await issue.save();
+        
+        const book = await Book.findById(issue.book);
+        if (book) {
+            book.volume += 1;
+            await book.save();
+        }
         
         await Student.findByIdAndUpdate(issue.student, {
             $pull: { issuedBooks: issue._id }

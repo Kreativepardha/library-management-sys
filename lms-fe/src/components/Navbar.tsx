@@ -17,14 +17,12 @@ const Navbar = () => {
     const scrolled = useScrollTop();
     const [isAdmin, setIsAdmin] = useState(false);
     const token = localStorage.getItem("token");
-    console.log(token)
     const navigate = useNavigate();
 
     useEffect(() => {
         if (token) {
             const checkAdminStatus = async () => {
                 const adminStatus = await isAdminUser(token);
-                console.log("ADDDDDDMin"+adminStatus)
                 setIsAdmin(adminStatus);
             };
             checkAdminStatus();
@@ -106,7 +104,6 @@ const isAdminUser = async (token: string): Promise<boolean> => {
         const decodedToken: any = jwtDecode(token);
         const userId = decodedToken.userId;
         const response = await axios.get(`${BACKEND_URL}/api/v1/user/${userId}`);
-        console.log(response)
         return response.data.is_admin;
     } catch (err) {
         console.error("Error checking admin status:", err);

@@ -37,7 +37,7 @@ export const AddBook = () => {
       edition,
       title,
       pages: parseInt(pages, 10), 
-      volume,
+      volume: parseInt(volume),
       publisher,
       source,
       billdate,
@@ -145,7 +145,7 @@ export const AddBook = () => {
               value={volume}
               onChange={(e) => setVolume(e.target.value)}
               placeholder="Enter volume"
-              type="text"
+              type="number"
             />
             <Input
               label="Publisher"
@@ -169,7 +169,7 @@ export const AddBook = () => {
               value={billdate}
               onChange={(e) => setBilldate(e.target.value)}
               placeholder="2024-06-24"
-              type="text"
+              type="date"
             />
             <Input
               label="Cost"

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { Loading } from "../components/Loading";
-import Modal from "../components/Modal"; // Assuming the Modal component path
+import Modal from "../components/Modal";
 
 interface Student {
   id: string;
@@ -39,24 +39,18 @@ export const DisplayIssue: React.FC = () => {
     const fetchIssuedBooks = async () => {
       try {
         const token = localStorage.getItem("token");
-
-        if (!token) {
-          throw new Error("User is not authenticated.");
-        }
+        if (!token) throw new Error("User is not authenticated.");
 
         const response = await axios.get(`${BACKEND_URL}/api/v1/issue`, {
-          headers: {
-            Authorization: token,
-          },
+          headers: { Authorization: token },
         });
 
         if (response.data && Array.isArray(response.data)) {
-          const sortedBooks = response.data.sort((a, b) => {
-            return new Date(b.issuedDate).getTime() - new Date(a.issuedDate).getTime();
-          });
+          const sortedBooks = response.data.sort((a, b) =>
+            new Date(b.issuedDate).getTime() - new Date(a.issuedDate).getTime()
+          );
           setIssuedBooks(sortedBooks);
         } else {
-          console.error("Unexpected response format", response.data);
           throw new Error("Invalid response format");
         }
       } catch (error) {
@@ -83,15 +77,12 @@ export const DisplayIssue: React.FC = () => {
   const confirmReturn = async () => {
     try {
       const token = localStorage.getItem("token");
+      if (!token) throw new Error("User is not authenticated.");
 
       const response = await axios.put(
         `${BACKEND_URL}/api/v1/issue/returned/${returningIssueId}`,
         null,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
+        { headers: { Authorization: token } }
       );
 
       console.log(response.data);
@@ -105,12 +96,8 @@ export const DisplayIssue: React.FC = () => {
       setConfirmModalOpen(false);
       setReturningIssueId(null);
     } catch (err) {
-      console.error(err);
-      if (axios.isAxiosError(err) && err.response) {
-        setError(err.response.data.message || "Failed to return book. Please try again later.");
-      } else {
-        setError("Failed to return book. Please try again later.");
-      }
+      console.error("Error returning book:", err);
+      setError("Failed to return book. Please try again later.");
     }
   };
 
@@ -122,28 +109,22 @@ export const DisplayIssue: React.FC = () => {
   const filteredBooks = issuedBooks.filter(
     (issue) =>
       !issue.returned &&
+      issue.book && // Check if issue.book exists
       (issue.book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         issue.book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
         issue.book.accessionNo.includes(searchTerm) ||
         (issue.student &&
           issue.student.name.toLowerCase().includes(searchTerm.toLowerCase())))
   );
+  
+  
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedBooks = filteredBooks.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
-
+  const paginatedBooks = filteredBooks.slice(startIndex, startIndex + itemsPerPage);
   const totalPages = Math.ceil(filteredBooks.length / itemsPerPage);
 
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
+  if (loading) return <Loading />;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="mt-20 flex flex-col">
@@ -168,7 +149,7 @@ export const DisplayIssue: React.FC = () => {
               key={issue._id}
               className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 ease-in-out"
             >
-              <h3 className="text-lg font- mb-2 font-bold">{issue.book.title}</h3>
+              <h3 className="text-lg mb-2 font-bold">{issue.book.title}</h3>
               <p className="text-sm text-gray-600">
                 <strong>Book:</strong> {issue.book.title} by {issue.book.author}
               </p>
@@ -186,8 +167,7 @@ export const DisplayIssue: React.FC = () => {
                 </>
               )}
               <p className="text-sm text-gray-600">
-                <strong>Issued Date:</strong>{" "}
-                {new Date(issue.issuedDate).toLocaleDateString()}
+                <strong>Issued Date:</strong> {new Date(issue.issuedDate).toLocaleDateString()}
               </p>
               {!issue.returned && (
                 <button

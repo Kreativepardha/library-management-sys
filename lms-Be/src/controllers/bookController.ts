@@ -20,7 +20,7 @@ const bookBody = zod.object({
 export const createBook = async (req:any, res:any) => {
   try {
     const result = bookBody.safeParse(req.body)
-    console.log("RESult"+result)
+    // console.log("RESult"+result)
     if(!result.success){
         return res.status(400).json({
             msg:"Invalid Input",
@@ -28,7 +28,7 @@ export const createBook = async (req:any, res:any) => {
         })
     }
         const newBook = new Book(result.data)
-        console.log("NEW boooookd"+newBook)
+        // console.log("NEW boooookd"+newBook)
         await newBook.save();
 
         return res.status(201).json({
@@ -87,9 +87,9 @@ export const getAllBook = async (req:any, res:any) => {
 export const getBook = async (req:any, res:any) => {
         try {
             const {id } = req.params;
-            console.log(id)
+            // console.log(id)
                 const book = await Book.find({_id:id})
-                console.log(book)
+                // console.log(book)
                     if(!book) {
                         return res.status(404).json({
                             message:"Book not Found"
@@ -131,16 +131,19 @@ export const deleteBook = async (req:any, res:any) => {
 
 export const updateBook = async(req:any,res:any) =>{ 
     const {id} = req.params;
+    console.log(id)
     const updates = req.body
+    console.log(updates)
     try {
             const book = await Book.findById(id)
             if(!book) {
                 return res.status(404).json({msg:"Book not found"})
             }
             Object.assign(book, updates);
-            await book.save()
-            res.status(200).json({msg:"Book Updated Successfully",book})
+            const updatedBook = await book.save();
 
+            return res.status(200).json({ msg: "Book Updated Successfully", book: updatedBook });
+            
     } catch (err) {
             return res.status(500).json({msg:"Server Error"})
     }

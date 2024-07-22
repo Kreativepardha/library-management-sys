@@ -8,7 +8,7 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ message, onConfirm, onCancel }) => {
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-gray-600 bg-opacity-75 flex justify-center items-center">
+    <div className="fixed top-0 left-0 w-full h-full bg-gray-600 bg-opacity-75 flex justify-center items-center z-99">
       <div className="bg-white w-1/4 p-8 rounded-lg shadow-lg">
         <p className="text-lg mb-4">{message}</p>
         <div className="flex justify-around">
