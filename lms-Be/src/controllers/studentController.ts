@@ -11,7 +11,7 @@ interface StudentProps {
 }
 
 const updateStudentBody = z.object({
-    name: z.string().trim().max(30).optional(),
+    name: z.string().trim().optional(),
     hallTicket: z.number().optional(),
     year: z.enum(["1", "2", "3", "4"]).optional(),
     batch: z.string().optional(),

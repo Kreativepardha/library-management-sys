@@ -13,7 +13,6 @@ const studentSchema = new mongoose.Schema({
     name: {
         type:String,
         trim:true,
-        maxLength:30
 
     },
     hallTicket:{

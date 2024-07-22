@@ -85,12 +85,12 @@ export const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
   };
 
   return (
-    <div className="bg-white-200 w-80 p-6 mt-20 rounded-md text-nowrap shadow-lg shadow-slate-200 hover:shadow-slate-400">
+    <div className="bg-white-200 w-80 p-6 my-20 rounded-md text-wrap shadow-lg shadow-slate-200 bg-gradient-to-r from-blue-200 to-cyan-200 hover:shadow-slate-400">
       <p>
         <strong>ID:</strong> {_id}
       </p>
       <p className="font-extrabold">
-        <strong>Name:</strong> {name}
+        <strong className="text-wrap ">Name:</strong> {name}
       </p>
       <p>
         <strong>Hall Ticket:</strong> {hallTicket}
@@ -114,8 +114,8 @@ export const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
           )}
         </span>
       </p>
-      <div className="flex justify-evenly mt-3 mb-0 p-0">
-        <Button variant="outline" onClick={handleIssueClick}>
+      <div className="flex justify-evenly mt-3 mb-0 p-0 ">
+        <Button variant="default" onClick={handleIssueClick}>
           Issue
         </Button>
         {showModal && (

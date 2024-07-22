@@ -10,7 +10,7 @@ export const Students = () => {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 41;
 
   useEffect(() => {
     const fetchStudents = async () => {
