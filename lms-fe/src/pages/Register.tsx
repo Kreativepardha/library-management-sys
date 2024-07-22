@@ -4,7 +4,6 @@ import { Button } from "../components/Button"
 import axios from "axios"
 import { BACKEND_URL } from "../config"
 import { useNavigate } from "react-router-dom"
-import { Navbar } from "../components/Navbar"
 
 
 export const Register = () => {

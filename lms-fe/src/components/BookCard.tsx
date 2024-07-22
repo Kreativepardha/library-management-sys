@@ -1,9 +1,7 @@
-import React from "react";
 import { format } from "date-fns";
 
 export const BookCard = ({ book, showDetails, toggleDetails, onDelete, onUpdate }) => {
   const {
-    _id,
     accessionNo,
     author,
     edition,

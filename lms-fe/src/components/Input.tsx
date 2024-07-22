@@ -17,7 +17,7 @@ interface InputProps{
 
 
 export const Input: React.FC<InputProps> = ({
-    type,placeholder,label,name,value,error,onChange,classname,required
+    type,placeholder,label,name,value,error,onChange
 }) => {
     return <div className="mb-4 p-2 ">
         <label className="block text-sm  font-extrabold  pl-1 capitalize   mb-1" >{label}</label>

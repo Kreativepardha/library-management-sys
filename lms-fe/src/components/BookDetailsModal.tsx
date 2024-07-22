@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../config';
-import { Button } from './Button';
 import Modal from './Modal';  
 
 interface Book {
