@@ -36,9 +36,9 @@ export const BookCard = ({ book, showDetails, toggleDetails, onDelete, onUpdate 
             <h1 className="font-extrabold">Volume: {volume}</h1>
             <h1 className="font-extrabold">Publisher: {publisher}</h1>
             <h1 className="font-extrabold">Source: {source}</h1>
-            <h1 className="font-extrabold">Bill Date: {formattedBillDate}</h1>
             <h1 className="font-extrabold">Cost: {cost}</h1>
             <h1 className="font-extrabold">Rack: {rackno}</h1>
+            <h1 className="font-extrabold">Bill Date: {formattedBillDate}</h1>
             <button onClick={onUpdate} className="bg-green-500 text-white px-4 py-2 rounded mt-2">
               Update
             </button>

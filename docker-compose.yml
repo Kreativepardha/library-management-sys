@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./lms-fe
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "5173:5173" 
+    volumes:
+      - ./lms-fe:/app
+      - /app/node_modules  
+    environment:
+      - NODE_ENV=development
+
+  backend:
+    build:
+      context: ./lms-Be
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "3000:3000"  
+    volumes:
+      - ./lms-Be:/app 
+      - /app/node_modules  
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - .env

@@ -5,7 +5,7 @@ import { isAdmin, isAuthenticated } from '../middlewares/auth';
 import { createStudent, getAllstudents, getStudent, updateStudent } from '../controllers/studentController';
 const router = express.Router();
 
-router.post("/",isAdmin,createStudent)
+router.post("/",createStudent)
 router.get("/:id",isAdmin, getStudent)
 router.get("/",isAdmin,getAllstudents)
 router.put("/:id",isAdmin, updateStudent)

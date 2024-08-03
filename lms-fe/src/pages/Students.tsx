@@ -53,6 +53,8 @@ export const Students = () => {
     student.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+ 
+  
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedStudents = filteredStudents.slice(
     startIndex,
