@@ -16,7 +16,7 @@ const dbUrl = process.env.MONGO_URL as string;
 
 app.use(express.json())
 app.use(cors({
-   origin: process.env.CORS_ORIGIN || '*',
+   origin: "https://library-management-kkwptlcv7-pardhas-projects.vercel.app" || '*',
     credentials: true
 }));
 
